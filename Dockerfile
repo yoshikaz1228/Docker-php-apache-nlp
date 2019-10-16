@@ -96,3 +96,6 @@ RUN apt-get update && apt-get upgrade -y \
  && cd ../ \
  && git clone https://github.com/kenkov/cabocha \
  && pip install cabocha/
+
+RUN usermod -u 1000 www-data \
+    && groupmod -g 1000 www-data
