@@ -10,6 +10,11 @@ RUN apt-get install -y libmecab-dev
 RUN apt-get install -y locales locales-all
 RUN apt-get install -y vim unzip
 
+RUN apt-get update \
+    && apt-get install -y locales \
+    && locale-gen ja_JP.UTF-8 \
+    && echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc
+
 RUN cd /tmp \
     && git clone https://github.com/taku910/mecab.git \
     && cd mecab/mecab/ \
@@ -83,7 +88,7 @@ RUN apt-get update && apt-get upgrade -y \
  && $PYENV_ROOT/plugins/python-build/install.sh \
  && /usr/local/bin/python-build -v $PYTHON_VERSION $PYTHON_ROOT \
  && rm -rf $PYENV_ROOT \
- && pip install regex  \
+ && pip install regex numpy  \
  && curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && unzip master.zip \
  && cd cabocha-master \
