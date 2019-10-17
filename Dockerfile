@@ -61,36 +61,16 @@ RUN apachectl start
 
 RUN apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-ENV PYTHON_VERSION 3.7.1
-ENV HOME /root
-ENV PYTHON_ROOT $HOME/local/python-$PYTHON_VERSION
-ENV PATH $PYTHON_ROOT/bin:$PATH
-ENV PYENV_ROOT $HOME/.pyenv
-RUN apt-get update && apt-get upgrade -y \
- && apt-get install -y \
-    git \
-    make \
-    build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    libbz2-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    wget \
-    curl \
-    llvm \
-    libncurses5-dev \
-    libncursesw5-dev \
-    xz-utils \
-    tk-dev \
-    libffi-dev \
-    liblzma-dev \
- && git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT \
- && $PYENV_ROOT/plugins/python-build/install.sh \
- && /usr/local/bin/python-build -v $PYTHON_VERSION $PYTHON_ROOT \
- && rm -rf $PYENV_ROOT \
- && pip install regex numpy  \
- && curl -OL https://github.com/taku910/cabocha/archive/master.zip \
+WORKDIR tmp/Python37
+RUN wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
+    && tar xvf Python-3.7.0.tar.xz
+WORKDIR /tmp/Python37/Python-3.7.0
+RUN ./configure --enable-optimizations \
+    && make altinstall \
+    && mkdir /usr/local/Python
+WORKDIR /usr/local/Python
+
+RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && unzip master.zip \
  && cd cabocha-master \
  && pip install python/ \
