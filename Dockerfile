@@ -8,7 +8,7 @@ RUN apt-get install -y git
 RUN apt-get install -y wget
 RUN apt-get install -y libmecab-dev
 RUN apt-get install -y locales locales-all
-RUN apt-get install -y vim unzip
+RUN apt-get install -y vim unzip php-dev
 
 RUN apt-get update \
     && apt-get install -y locales \
