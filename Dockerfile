@@ -61,7 +61,8 @@ RUN apachectl start
 
 RUN apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-RUN cd tmp/Python37 \
+RUN mkdir tmp/Python37 \
+    && cd tmp/Python37 \
     && wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
     && tar xvf Python-3.7.0.tar.xz \
     && cd /tmp/Python37/Python-3.7.0 \
