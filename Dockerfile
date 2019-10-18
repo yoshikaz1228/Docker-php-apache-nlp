@@ -67,9 +67,9 @@ RUN apt-get install -y build-essential libbz2-dev libdb-dev \
  && cd Python-3.7.5 \
  && ./configure --enable-shared  --with-ensurepip \
  && make \
- && sudo make install \
- && sudo sh -c "echo '/usr/local/lib' > /etc/ld.so.conf.d/custom_python3.conf" \
- && sudo ldconfig \
+ && make install \
+ && sh -c "echo '/usr/local/lib' > /etc/ld.so.conf.d/custom_python3.conf" \
+ && ldconfig \
  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
  && python3.7 get-pip.py \
  && which python3
