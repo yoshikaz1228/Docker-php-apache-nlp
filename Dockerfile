@@ -56,19 +56,23 @@ RUN apachectl start
 
 RUN apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-RUN mkdir tmp \
-    && cd tmp \
-    && mkdir Python37 \
-    && cd Python37 \
-    && wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
-    && tar xvf Python-3.7.0.tar.xz \
-    && cd Python-3.7.0 \
-    && ./configure --enable-optimizations \
-    && make altinstall \
-    && mkdir /usr/local/Python \
-    && cd /usr/local/Python \
-    && wget https://bootstrap.pypa.io/get-pip.py \
-    && python get-pip.py
+
+
+RUN apt-get install -y build-essential libbz2-dev libdb-dev \
+  libreadline-dev libffi-dev libgdbm-dev liblzma-dev \
+  libncursesw5-dev libsqlite3-dev libssl-dev \
+  zlib1g-dev uuid-dev tk-dev \
+ && wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz \
+ && tar xzf Python-3.7.5.tgz \
+ && cd Python-3.7.5 \
+ && ./configure --enable-shared  --with-ensurepip \
+ && make \
+ && sudo make install \
+ && sudo sh -c "echo '/usr/local/lib' > /etc/ld.so.conf.d/custom_python3.conf" \
+ && sudo ldconfig \
+ && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+ && python3.7 get-pip.py \
+ && which python3
 
 RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && unzip master.zip \
@@ -76,9 +80,9 @@ RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && pip install python/ \
  && cd ../ \
  && git clone https://github.com/kenkov/cabocha \
- && pip install cabocha/
+ && pip3 install cabocha/
  
- RUN pip install regex mecab-python3
+ RUN pip3 install regex mecab-python3
 
 RUN usermod -u 1000 www-data \
     && groupmod -g 1000 www-data
