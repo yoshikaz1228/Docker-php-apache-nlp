@@ -61,14 +61,14 @@ RUN apachectl start
 
 RUN apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-WORKDIR tmp/Python37
-RUN wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
-    && tar xvf Python-3.7.0.tar.xz
-WORKDIR /tmp/Python37/Python-3.7.0
-RUN ./configure --enable-optimizations \
+RUN cd tmp/Python37 \
+    && wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
+    && tar xvf Python-3.7.0.tar.xz \
+    && cd /tmp/Python37/Python-3.7.0 \
+    && ./configure --enable-optimizations \
     && make altinstall \
-    && mkdir /usr/local/Python
-WORKDIR /usr/local/Python
+    && mkdir /usr/local/Python \
+    && cd /usr/local/Python
 
 RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && unzip master.zip \
@@ -77,6 +77,8 @@ RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && cd ../ \
  && git clone https://github.com/kenkov/cabocha \
  && pip install cabocha/
+ 
+ RUN pip install regex mecab-python3
 
 RUN usermod -u 1000 www-data \
     && groupmod -g 1000 www-data
