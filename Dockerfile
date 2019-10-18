@@ -56,15 +56,19 @@ RUN apachectl start
 
 RUN apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 
-RUN mkdir tmp/Python37 \
-    && cd tmp/Python37 \
+RUN mkdir tmp \
+    && cd tmp \
+    && mkdir Python37 \
+    && cd Python37 \
     && wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz \
     && tar xvf Python-3.7.0.tar.xz \
-    && cd /tmp/Python37/Python-3.7.0 \
+    && cd Python-3.7.0 \
     && ./configure --enable-optimizations \
     && make altinstall \
     && mkdir /usr/local/Python \
-    && cd /usr/local/Python
+    && cd /usr/local/Python \
+    && wget https://bootstrap.pypa.io/get-pip.py \
+    && python get-pip.py
 
 RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && unzip master.zip \
