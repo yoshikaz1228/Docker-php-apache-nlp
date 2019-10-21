@@ -82,7 +82,7 @@ RUN curl -OL https://github.com/taku910/cabocha/archive/master.zip \
  && git clone https://github.com/kenkov/cabocha \
  && pip3 install cabocha/
  
- RUN pip3 install regex mecab-python3
+ RUN pip3 install regex mecab-python3 numpy
 
 RUN usermod -u 1000 www-data \
     && groupmod -g 1000 www-data
